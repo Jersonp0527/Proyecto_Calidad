@@ -2,9 +2,9 @@
 
 ## Aplicación de Gestión de Residuos – WasteTrack
 
-**Fecha de emisión:** 2026-06-24
+**Fecha de emisión:** 2026-07-31
 
-**Identificador único:** PMP-WT-2025-v2.0
+**Identificador único:** PMP-WT-2025-v2.1
 
 **Organización emisora:** Grupo 09 – Calidad de Software 2025-2
 
@@ -143,6 +143,14 @@ Ref Documento
     proyecto
 [6] React Documentation – https://react.dev
 [7] Node.js Documentation – https://nodejs.org
+[8] ISO/IEC 9126:2001 – Software engineering – Product quality (reemplazado por ISO/IEC 25010)
+[9] ISO/IEC 25020:2019 – SQuaRE – Measurement reference model and guide
+[10] ISO/IEC 25022:2016 – SQuaRE – Measurement of quality in use
+[11] ISO/IEC 25023:2016 – SQuaRE – Measurement of system and software product quality
+[12] ISO/IEC 12207:2017 – Systems and software engineering – Software life cycle processes
+[13] ISO 9001:2015 – Quality management systems – Requirements
+[14] CMMI-DEV v2.0 – CMMI Institute (Carnegie Mellon / Isaca)
+[15] Deming, W. E. – Out of the Crisis – MIT Press, 1986 (ciclo PDCA)
 ```
 
 ## 3. Definiciones (Cláusula 3 del PMP)
@@ -270,11 +278,210 @@ Se adopta un ciclo de vida iterativo-incremental con marcos de Scrum adaptado:
 
 ### 4.2 Plan de mejora de procesos (Subcláusula 4.2)
 
-- Retrospectiva al final de cada sprint.
+#### 4.2.1 Enfoque y principio Kaizen
 
-- Métricas de velocidad de equipo rastreadas por sprint.
+La mejora continua es un enfoque sistemático para optimizar procesos, productos y servicios a lo largo del tiempo; en ingeniería de software busca incrementar la calidad del producto, la eficiencia del proceso y la satisfacción del cliente (ISO/IEC 12207:2017, §6.4). Siguiendo el principio **Kaizen** ("cambio para mejor"), WasteTrack aplica mejoras en pequeños pasos constantes durante cada sprint, en lugar de grandes cambios aislados, reforzando la cultura de calidad del equipo a lo largo de todo el ciclo de vida.
 
-- Revisión mensual de métricas de calidad.
+#### 4.2.2 Ciclo PDCA (Deming) aplicado a WasteTrack
+
+El ciclo **PDCA** (Plan–Do–Check–Act) de Deming estructura la mejora continua del proceso en cada sprint y en cada revisión de fase:
+
+```text
+Fase PDCA    Actividad en WasteTrack                                          Responsable
+Planificar   Retrospectiva al cierre de sprint: análisis Ishikawa de          Jefe de Proyecto
+             problemas detectados; propuesta de acciones de mejora             + equipo
+             concretas y actualización del backlog de mejoras de proceso.
+Hacer        Implementar los cambios acordados en el sprint siguiente:         Equipo técnico
+             nuevas políticas de cobertura, refactoring planificado,
+             ajuste de pipelines CI/CD, capacitación puntual al equipo.
+Verificar    Revisar métricas de calidad del §6.5 al cierre del sprint:        QA
+             cobertura de pruebas, densidad de defectos, SPI, CPI;
+             comparar con metas definidas en los objetivos OC1–OC6.
+Actuar       Estandarizar las prácticas que mejoraron el proceso en la         Jefe de Proyecto
+             Process Asset Library (PAL del proyecto); si los resultados
+             no mejoran, reiniciar el ciclo con análisis más profundo.
+```
+
+> **Referencia:** Deming, W. E. – *Out of the Crisis* [15]; ISO/IEC 12207:2017, §6.4.
+
+#### 4.2.3 Normas ISO aplicables al proceso de mejora
+
+```text
+Norma                    Enfoque                              Aplicación en WasteTrack
+ISO 9001:2015            Gestión de la calidad                SGC definido en §4.0 del PMP;
+                                                              política y objetivos OC1–OC6
+ISO/IEC 12207:2017       Ciclo de vida del software           Mapa de procesos técnicos y
+                                                              de apoyo documentado en §4.0;
+                                                              proceso de medición por sprint
+ISO/IEC 15504 (SPICE)    Evaluación de procesos               Marco de referencia para
+                                                              evaluaciones futuras de madurez;
+                                                              complementa CMMI (§4.2.7)
+ISO/IEC 330xx            Evolución del modelo SPICE           Evolución aplicable a mejoras de
+                                                              largo plazo posteriores al piloto
+```
+
+> **Error común a evitar:** adoptar una norma solo "en el papel" sin integrarla al trabajo diario del equipo (ISO/IEC 12207:2017).
+
+#### 4.2.4 Técnicas de análisis de causa raíz
+
+Cuando una métrica de calidad supera su umbral de alerta (ver §6.5), se aplican las siguientes técnicas antes de proponer acciones de mejora:
+
+- **Diagrama causa-efecto (Ishikawa):** categorías Personas / Proceso / Herramientas / Datos. Se construye en la retrospectiva del sprint afectado.
+- **Los 5 porqués:** a partir del síntoma detectado, se pregunta "¿por qué?" cinco veces en cadena hasta identificar la causa raíz.
+- **Benchmarking de procesos:** comparación de métricas actuales con sprints anteriores del mismo proyecto.
+- **Métricas históricas:** gráficos de control de defectos por iteración para detectar variaciones anómalas.
+
+**Plantilla Ishikawa para retrospectiva WasteTrack:**
+
+```text
+Categoría      Factores de ejemplo en el contexto WasteTrack
+Personas       Falta de capacitación en React Native; rotación de miembro del equipo
+Proceso        Sin política de cobertura mínima; revisiones de código omitidas en sprint
+Herramientas   CI inactiva para métricas; dependencia geoespacial sin pruebas previas
+Datos          Requisitos ambiguos del municipio piloto; datos de prueba incompletos
+```
+
+#### 4.2.5 Agile y DevOps para mejora continua
+
+- **Scrum (retrospectivas):** cada sprint cierra con una retrospectiva estructurada donde el equipo identifica qué salió bien, qué se debe mejorar y define acciones concretas y medibles para el sprint siguiente. Las acciones quedan registradas en el backlog de mejoras de proceso (PAL).
+- **Inspección y adaptación:** las revisiones de sprint con stakeholders (municipio piloto, docente asesor) generan retroalimentación frecuente que retroalimenta el backlog de producto y el proceso.
+- **DevOps – CI/CD:** el pipeline de GitHub Actions (§4.3) amplía la mejora continua hacia la automatización de métricas de calidad: cobertura de código, análisis estático (ESLint + SAST), detección de vulnerabilidades y pruebas regresivas automáticas en cada push.
+
+> **Buena práctica:** cerrar cada sprint con acciones concretas y medibles surgidas de la retrospectiva. **Error a evitar:** automatizar el despliegue sin automatizar las métricas de calidad ni las pruebas (S22, Diap. 12).
+
+#### 4.2.6 KPI de mejora continua
+
+Los indicadores clave de desempeño del proceso se rastrean sprint a sprint y se revisan en la reunión mensual de métricas de calidad:
+
+```text
+KPI                                        Meta              Frecuencia             Responsable
+Tasa de defectos por módulo (def./KLOC)    < 5               Cada sprint (CI/CD)    QA
+Cumplimiento de cronograma (SPI)           ≥ 0.90            Cada sprint            Jefe de Proyecto
+Retrabajo (% esfuerzo corrección /         < 15 %            Mensual                QA + JP
+  esfuerzo total)
+Satisfacción del usuario final             ≥ 85 % positivo   Mes 5 (beta) + S12     QA / UX
+Cobertura de pruebas unitarias             ≥ 80 %            Cada sprint (CI/CD)    QA
+Velocidad del equipo (SP/sprint)           ≥ 18 SP           Cada sprint            Jefe de Proyecto
+```
+
+#### 4.2.7 Modelo CMMI de referencia
+
+**Definición:** CMMI (Capability Maturity Model Integration), desarrollado por el SEI (Carnegie Mellon), es un marco de mejora de procesos que orienta cómo desarrollar y mejorar los procesos de ingeniería de software. Se organiza en cinco niveles de madurez y provee buenas prácticas para procesos más eficientes, eficaces y predecibles [14].
+
+**Constelación aplicable — CMMI-DEV:** dado que WasteTrack es un proyecto de desarrollo de producto software, se aplica la constelación **CMMI-DEV** (Desarrollo de productos y servicios). Las constelaciones CMMI-SVC (servicios) y CMMI-ACQ (adquisición) no corresponden al contexto del proyecto.
+
+**Representación escalonada (staged) — 5 niveles de madurez organizacional:**
+
+```text
+Nivel   Nombre                         Descripción
+1       Inicial                        Procesos impredecibles; éxito depende de personas
+                                       clave; sin procesos formales
+2       Gestionado                     Procesos planificados, ejecutados y controlados
+                                       proyecto a proyecto; compromisos establecidos
+3       Definido                       Procesos estandarizados en toda la organización;
+                                       adaptados desde un conjunto de procesos estándar
+4       Cuantitativamente gestionado   Procesos controlados estadísticamente; variaciones
+                                       detectadas y corregidas con datos cuantitativos
+5       En optimización                Mejora continua proactiva mediante innovación;
+                                       causas de variación identificadas y eliminadas
+```
+
+**Nivel auto-declarado de WasteTrack:** **Nivel 2 – Gestionado**, coherente con la naturaleza académica del proyecto: PMP definido, backlog priorizado, métricas rastreadas por sprint y gestión de riesgos documentada. La ruta a Nivel 3 requeriría estandarización de procesos a nivel organizacional (grupo/empresa).
+
+**Representación continua — niveles de capacidad por área de proceso:**
+
+```text
+Nivel   Nombre       Descripción
+0       Incompleto   El proceso no se realiza o no logra sus objetivos específicos
+1       Realizado    El proceso logra sus objetivos específicos
+2       Gestionado   El proceso está planificado, monitoreado y controlado
+3       Definido     El proceso sigue una definición organizacional estándar
+```
+
+**Áreas de proceso relevantes (CMMI-DEV) mapeadas a WasteTrack:**
+
+```text
+Área de proceso               Sigla   Descripción resumida                Sprint / Fase
+Gestión de Requisitos         REQM    Gestionar requisitos y sus cambios  S01–S02 y todo el proyecto
+Desarrollo de Requisitos      RD      SG1 cliente · SG2 producto ·        S01–S02 (§5.7)
+                                      SG3 análisis y validación
+Solución Técnica              TS      Diseño de componentes y soluciones  S03–S04 (arquitectura)
+Integración del Producto      PI      Integrar componentes del sistema     S07–S08 (§5.7)
+Verificación                  VER     Pruebas unitarias e integración      Continuo S05–S10
+Validación                    VAL     Pruebas con usuarios y rendimiento   S09–S10 (§5.7)
+```
+
+**Metas genéricas (GG) e institucionalización:**
+
+```text
+GG 1   Lograr los objetivos específicos del área de proceso
+GG 2   Institucionalizar un proceso gestionado  ← nivel actual WasteTrack (Nivel 2)
+GG 3   Institucionalizar un proceso definido
+GG 4   Institucionalizar un proceso gestionado cuantitativamente
+GG 5   Institucionalizar un proceso en optimización
+```
+
+#### 4.2.8 Caso ilustrativo de mejora continua — módulo de rutas WasteTrack
+
+Como referencia de aplicación práctica del ciclo PDCA, se presenta el siguiente escenario para el Sprint S07 (módulo administrador – gestión de rutas geoespaciales, 21 SP):
+
+**Problema detectado:** en la revisión del Sprint S07 se identifica un aumento de defectos en el módulo de rutas — el de mayor complejidad del backlog.
+
+**Análisis con Ishikawa + 5 porqués:**
+
+```text
+¿Por qué aumentaron los defectos en el módulo de rutas?
+→ Porque la librería geoespacial no fue probada previamente en el stack del equipo.
+¿Por qué no fue probada?
+→ Porque no existe política de prueba de dependencias nuevas antes de integrarlas.
+¿Por qué no existe esa política?
+→ Porque el proceso de integración de dependencias no está estandarizado.
+¿Por qué no está estandarizado?
+→ Porque no hay checklist de incorporación de nuevas librerías en el pipeline CI/CD.
+¿Por qué no hay checklist?
+→ Porque la organización (equipo académico) no tiene proceso formal de evaluación
+   de dependencias — causa raíz identificada.
+```
+
+**Aplicación del ciclo PDCA:**
+
+```text
+Fase        Acción aplicada en WasteTrack
+Planificar  Ishikawa en retro S07 + 5 porqués → política de cobertura ≥ 80 %
+            para módulos ≥ 15 SP; incorporar checklist de dependencias al pipeline
+Hacer       Actualizar pipeline CI/CD con umbral de cobertura; pair programming
+            en S08 para el módulo de rutas afectado; capacitación en librería
+Verificar   Revisión semanal de métricas Jest coverage + análisis estático
+Actuar      Política de cobertura formalizada en PAL; checklist de dependencias
+            incorporado como paso obligatorio en pull request template
+```
+
+**Resultado esperado (referencia):**
+
+```text
+Métrica                      Antes (S07)   Después (S08)
+Cobertura de pruebas         < 50 %        ≥ 80 %
+Defectos por KLOC            Alta          < 5 def./KLOC
+Tiempo de corrección defecto Largo         Reducido (< 1.8 días ref.)
+Duplicación de código        No medida     Controlada (análisis estático)
+```
+
+> **Lección aprendida (S22, Caso 1):** la capacitación fue clave; las métricas automatizadas generan transparencia y compromiso del equipo.
+
+#### 4.2.9 Buenas prácticas y errores comunes
+
+```text
+Buenas prácticas                                    Errores comunes a evitar
+Medir antes y después de cada cambio de proceso     Cambiar el proceso sin datos que lo respalden
+Capacitar al equipo en las técnicas a aplicar       Tratar la mejora continua como evento único,
+Automatizar la recolección de métricas (CI/CD)        no como un ciclo permanente
+Cerrar cada sprint con acciones concretas y         Adoptar una norma solo "en el papel"
+  medibles surgidas de la retrospectiva             Perseguir un nivel CMMI como sello sin cambiar
+Vincular cada área de proceso CMMI a metas            el trabajo diario del equipo
+  genéricas de institucionalización (GG1–GG5)       Ignorar la representación continua de CMMI
+Elegir la constelación CMMI según el negocio          cuando solo se necesita mejorar un área puntual
+  real (DEV para WasteTrack)
+```
 
 ### 4.3 Plan de infraestructura (Subcláusula 4.3)
 
@@ -907,9 +1114,116 @@ Cualquier retraso en una actividad con holgura igual a cero genera un retraso eq
 
 ### 6.5 Plan de aseguramiento de calidad
 
-### Métricas de calidad rastreadas continuamente (ISO/IEC 25010:2011)
+#### 6.5.1 Marco normativo de calidad (ISO/IEC 25000 SQuaRE)
 
-Las métricas se organizan según las 8 características de calidad de ISO/IEC 25010:
+La evaluación de la calidad del producto WasteTrack se apoya en la familia de normas **ISO/IEC 25000 – SQuaRE** (Software Product Quality Requirements and Evaluation), que actualiza y amplía la norma ISO/IEC 9126 [8]:
+
+```text
+Norma           Nombre                              Pregunta central            Produce
+ISO/IEC 25010   Modelo de calidad del software      ¿Qué es calidad?            Características y
+                                                                                subcaracterísticas
+ISO/IEC 25020   Guía de medición de calidad         ¿Cómo medir?                Métricas, indicadores
+                                                                                y criterios
+ISO/IEC 25022   Medición de calidad en uso          ¿Cómo lo vive el usuario?   Métricas de eficacia
+                                                                                y satisfacción
+ISO/IEC 25023   Medición de calidad del producto    ¿Cómo es el software?       Métricas técnicas
+                                                                                objetivas
+ISO/IEC 25030   Requisitos de calidad               ¿Qué exigir?                Especificación de
+                                                                                requisitos de calidad
+ISO/IEC 25040   Evaluación del producto software    ¿Cómo evaluar?              Proceso de evaluación
+```
+
+> **Flujo integrado:** 25010 define qué medir → 25020 define cómo medir → 25023 mide el producto → 25022 mide la experiencia del usuario → el resultado es un plan de mejora basado en evidencia.
+
+#### 6.5.2 Método GQM: 5 pasos de evaluación de calidad (ISO 9126 — aplicables al proyecto)
+
+El método GQM (Goal–Question–Metric) estructurado en ISO 9126 define **5 pasos** para evaluar la calidad durante el ciclo de desarrollo. El paso 1 se realiza en el análisis de requisitos; los pasos 2–5 se repiten en cada actividad del ciclo de vida (ISO/IEC 12207).
+
+**Paso 1: Identificación de los requisitos de calidad**
+
+Para cada característica y subcaracterística del modelo de calidad se asigna un peso de necesidad (Alto / Medio / Bajo) que permite centrar los esfuerzos evaluativos en las subcaracterísticas más importantes para WasteTrack.
+
+*Calidad en uso:*
+
+```text
+Característica en uso    Peso (Alto / Medio / Bajo)   Justificación WasteTrack
+Eficacia                 Alto                         Ciudadanos deben lograr reportar sin asistencia
+Productividad            Medio                        Tiempo de tarea relevante pero no crítico
+Seguridad en uso         Alto                         Errores en reportes afectan gestión municipal
+Satisfacción             Alto                         Adopción ciudadana depende de UX positiva
+Contexto de uso          Medio                        Red móvil variable; dispositivos heterogéneos
+```
+
+*Calidad externa e interna (ISO/IEC 25010):*
+
+```text
+Característica              Subcaracterística              Peso
+Adecuación funcional        Completitud funcional          Alto
+                            Corrección funcional           Alto
+                            Adecuación funcional           Alto
+Eficiencia de desempeño     Comportamiento temporal        Alto
+                            Utilización de recursos        Medio
+                            Capacidad                      Medio
+Compatibilidad              Coexistencia                   Medio
+                            Interoperabilidad              Medio
+Usabilidad                  Aprendibilidad                 Medio
+                            Operabilidad                   Alto
+                            Accesibilidad                  Alto
+                            Protección ante errores        Medio
+Fiabilidad                  Madurez                        Alto
+                            Disponibilidad                 Alto
+                            Tolerancia a fallos            Alto
+                            Recuperabilidad                Alto
+Seguridad                   Confidencialidad               Alto
+                            Integridad                     Alto
+                            No-repudio                     Medio
+                            Autenticidad                   Alto
+                            Trazabilidad                   Medio
+Mantenibilidad              Analizabilidad                 Alto
+                            Modificabilidad                Alto
+                            Testabilidad                   Alto
+Portabilidad                Adaptabilidad                  Medio
+                            Instalabilidad                 Medio
+                            Reemplazabilidad               Bajo
+```
+
+**Paso 2: Especificación de la evaluación**
+
+Para cada subcaracterística se identifican las métricas aplicables y los niveles requeridos. La tabla completa de métricas con nivel requerido y resultado real de la evaluación se presenta en §6.5.3 (calidad del producto) y §6.5.4 (calidad en uso). En la columna "Resultado real" se registra el valor medido al cierre del sprint o fase correspondiente.
+
+> **Nota (ISO 9126):** es posible que algunas filas estén vacías en actividades tempranas del ciclo de desarrollo, ya que no todas las subcaracterísticas pueden medirse desde el inicio.
+
+**Paso 3: Diseño de la evaluación**
+
+Plan de medición por subcaracterística clave, entregables a evaluar y tipos de métricas aplicables:
+
+```text
+Subcaracterística          Entregables a evaluar       Métricas int.        Métricas ext.       Métricas cal. en uso
+Completitud funcional      E1-SRS·E3-Alfa·E4-Beta      Trazabilidad RF      % RF cubiertos      N/A
+                                                       · Cobertura CP       por release
+Corrección funcional       E4-Beta · E5-Pruebas        Densidad             Defectos críticos   N/A
+                                                       defectos/KLOC        = 0
+Disponibilidad             E6-Producción · S12         N/A                  Uptime ≥ 99 %       Eficacia usuario
+                                                                            · MTBF · MTTR
+Comportamiento temporal    E3-Alfa · E4-Beta           Complejidad          T. resp. API        N/A
+                                                       ciclomática          · Throughput
+Operabilidad               E2-Prototipos·E5-Pruebas    N/A                  Tasa éxito tareas   Satisfacción ·
+                                                                                                Productividad
+Confidencialidad           E4-Beta · E6-Producción     Análisis SAST        Vulns OWASP         Seguridad en uso
+                                                       (100 % cobertura)    Top 10 = 0
+```
+
+**Paso 4: Ejecución de la evaluación**
+
+Este paso se aplica durante cada sprint de desarrollo (S05–S10) y en el piloto (S12). Se ejecuta el plan de medición del Paso 3 y se completan las columnas "Resultado real" de las tablas de §6.5.3 y §6.5.4. El pipeline CI/CD (GitHub Actions + ESLint + Jest) automatiza la recolección de métricas internas en cada push. La serie de normas **ISO/IEC 14598** se usa como guía para planificar y ejecutar el proceso de medición.
+
+**Paso 5: Retroalimentación a la organización**
+
+Una vez completadas todas las mediciones, los resultados se incluyen en el Informe final de calidad (§7 — entregable al docente). Se identifican las áreas en que la calidad debe mejorar para que el producto satisfaga las necesidades del usuario. Los resultados se integran al proceso **Verificar / Actuar** del ciclo PDCA (§4.2.2) y al cálculo del Indicador Global de Preferencia LSP (§6.5.5).
+
+#### 6.5.3 Métricas de calidad del producto (ISO/IEC 25023)
+
+Las métricas se organizan según las 8 características de calidad de ISO/IEC 25010 (ISO/IEC 25023:2016 [11]). Tipo de métrica según ISO/IEC 25020 [9]: **directa** (medida objetiva), **derivada** (calculada) o **subjetiva** (percepción). La columna "Resultado real" se completa al cierre de cada sprint / fase.
 
 ```text
 Característica ISO 25010     Métrica                                  Meta               Frecuencia
@@ -933,9 +1247,159 @@ Mantenibilidad               Cobertura de pruebas unitarias           ≥ 80 %  
 Portabilidad                 Tiempo de despliegue automatizado        ≤ 30 min           Sprint 11
 ```
 
-**Actividades de aseguramiento:** - Revisión de código por pares (pull request obligatorio).
+> **Referencia:** ISO/IEC 25023:2016 [11]; ISO/IEC 25020:2019 [9].
 
-- Análisis estático automático en CI/CD (ESLint). - Ejecución automática de suite de pruebas en cada push. - Revisión periódica de métricas de mantenibilidad del código.
+#### 6.5.4 Métricas de calidad en uso (ISO/IEC 25022)
+
+La calidad en uso mide el grado en que el sistema permite a los usuarios alcanzar sus objetivos de forma eficaz, eficiente y satisfactoria en el contexto de uso real (ISO/IEC 25022:2016). Se evalúa durante las pruebas de usabilidad (S10) y el piloto (S12):
+
+```text
+Característica       Métrica definida                                  Meta           Sprint / Fase
+Eficacia             % ciudadanos que crean reporte sin asistencia     ≥ 90 %         S10 · S12
+Productividad        Tiempo promedio de creación de reporte            ≤ 60 s         S10 · S12
+Seguridad en uso     Reportes duplicados o erróneos sin confirmación   < 2 %          S10 · S12
+Satisfacción         Encuesta post-tarea (escala Likert 1–5)           ≥ 4.2 / 5      S10 · S12
+                     (equivale al ≥ 85 % positivo declarado en OC3)
+Contexto de uso      Pruebas en red móvil 3G/4G · Android ≥ 8.0       100 % pass     S10
+                     · iOS ≥ 13 (condiciones declaradas en §1.2)
+```
+
+> **Diferencia clave (S15):** un sistema puede tener 0 errores técnicos y aun así tener baja calidad en uso si los usuarios no logran sus tareas. Esta tabla complementa la de §6.5.3. **Referencia:** ISO/IEC 25022:2016 [10].
+
+#### 6.5.5 Marco de evaluación de 4 etapas + agregación LSP
+
+Siguiendo el marco de evaluación basado en ISO/IEC 25010, 25020 y 25040, se define un proceso auto-evaluativo de 4 etapas que se ejecuta al cierre del piloto (Sprint S12):
+
+**Etapa 1 — Árbol de requerimientos de calidad WasteTrack**
+
+Estructura jerárquica que descompone las características de calidad en subcaracterísticas y atributos cuantificables (Característica → Subcaracterística → Atributo medible):
+
+```text
+1. Adecuación funcional
+
+   1.1 Completitud funcional
+       1.1.1 Cobertura de requisitos del SRS (% RF cubiertos en release final)
+       1.1.2 Cobertura de casos de uso verificados (% casos de prueba pasados)
+
+   1.2 Corrección funcional
+       1.2.1 Defectos críticos en entrega a producción (número)
+       1.2.2 Densidad de defectos por módulo (defectos / KLOC)
+
+2. Usabilidad
+
+   2.1 Operabilidad del ciudadano
+       2.1.1 Tasa de éxito en creación de reporte sin asistencia (%)
+       2.1.2 Tiempo promedio de creación de reporte (segundos)
+
+   2.2 Satisfacción percibida
+       2.2.1 Puntuación en encuesta post-piloto (escala 1–5)
+
+3. Fiabilidad
+
+   3.1 Disponibilidad
+       3.1.1 Uptime del sistema durante el período de piloto (%)
+
+   3.2 Recuperabilidad
+       3.2.1 MTTR – Tiempo medio de recuperación ante fallo (horas)
+       3.2.2 MTBF – Tiempo medio entre fallos (horas)
+```
+
+**Etapa 2 — Especificación de métricas**
+
+Una métrica convierte una observación (conteo, sí/no, tiempo) en un valor normalizado entre 0 % y 100 % que permite comparar atributos de distinta naturaleza.
+
+```text
+Atributo   Fórmula de normalización (0 % – 100 %)
+1.1.1      (RF cubiertos / RF totales del SRS) × 100 %
+1.1.2      (CP pasados / CP totales ejecutados) × 100 %
+1.2.1      100 % si defectos_críticos = 0;  0 % si defectos_críticos ≥ 1
+1.2.2      máx(0,  (1 − densidad / 5) × 100 %)     [referencia: meta < 5 def./KLOC]
+2.1.1      (reportes exitosos / intentos totales) × 100 %
+2.1.2      mín(100,  (60 / t_promedio_segundos) × 100 %)     [ideal ≤ 60 s]
+2.2.1      (puntaje_promedio / 5) × 100 %
+3.1.1      uptime directamente en %
+3.2.1      mín(100,  (4 / MTTR_horas) × 100 %)     [ideal ≤ 4 h]
+3.2.2      mín(100,  (MTBF_horas / 720) × 100 %)   [meta ≥ 720 h]
+```
+
+**Escala de aceptabilidad:**
+
+```text
+Rango           Nivel            Significado
+[0 %, 40 %)     Insatisfactorio  El atributo no cumple los requisitos
+[40 %, 60 %)    Marginal         Cumplimiento parcial
+[60 %, 100 %]   Satisfactorio    Cumple los requisitos
+```
+
+**Etapa 3 — Medición de atributos (Indicadores Elementales)**
+
+Tabla para registrar los Indicadores Elementales (IE) al cierre del piloto (S12). Los valores se completan durante la ejecución del Paso 4 del método GQM (§6.5.2):
+
+```text
+Atributo   Descripción                                IE (%)   Fuente de medición
+1.1.1      Cobertura de requisitos del SRS            ____     SRS + Backlog sprint S11
+1.1.2      Cobertura de casos de uso verificados      ____     Reporte CI/CD (Jest coverage)
+1.2.1      Defectos críticos en entrega               ____     Rastreo de defectos QA
+1.2.2      Densidad de defectos por módulo            ____     Análisis estático / SonarQube
+2.1.1      Tasa de éxito en creación de reporte       ____     Pruebas de usabilidad S10 (QA)
+2.1.2      Tiempo promedio de creación de reporte     ____     Pruebas de usabilidad S10 (QA)
+2.2.1      Puntuación encuesta post-piloto            ____     Encuesta Likert S12
+3.1.1      Uptime del sistema                         ____     Grafana + Prometheus (S11–S12)
+3.2.1      MTTR                                       ____     Grafana (mes 6 / piloto)
+3.2.2      MTBF                                       ____     Grafana (mes 6 / piloto)
+```
+
+**Etapa 4 — Cálculo con modelo de agregación LSP**
+
+El modelo **LSP (Logic Scoring of Preference)** combina los indicadores elementales en un Indicador Global (IG) mediante la fórmula de media de potencia pesada:
+
+```text
+IG = P1 · IE1 + P2 · IE2 + … + Pm · IEm     (con ΣPi = 1)
+```
+
+Donde `Pi` es el peso asignado a cada característica o subcaracterística e `IEi` es el valor medido (entre 0 y 1). Los pesos reflejan la importancia relativa según la política de calidad del §4.0 y los objetivos OC1–OC6:
+
+```text
+Característica / Subcaracterística       Peso    IE (%)   IG parcial
+1. Adecuación funcional                  0.35    ____     ____
+   1.1 Completitud funcional             0.60
+       1.1.1 Cobertura requisitos SRS    0.60    ____
+       1.1.2 Cobertura casos de uso      0.40    ____
+   1.2 Corrección funcional              0.40
+       1.2.1 Defectos críticos           0.70    ____
+       1.2.2 Densidad defectos           0.30    ____
+2. Usabilidad                            0.25    ____     ____
+   2.1 Operabilidad ciudadano            0.60
+       2.1.1 Tasa éxito reporte          0.50    ____
+       2.1.2 Tiempo promedio reporte     0.50    ____
+   2.2 Satisfacción percibida            0.40
+       2.2.1 Encuesta post-piloto        1.00    ____
+3. Fiabilidad                            0.25    ____     ____
+   3.1 Disponibilidad                    0.60
+       3.1.1 Uptime sistema              1.00    ____
+   3.2 Recuperabilidad                   0.40
+       3.2.1 MTTR                        0.40    ____
+       3.2.2 MTBF                        0.60    ____
+4. Eficiencia de desempeño               0.10    ____     ____
+   (atributo directo: tiempo resp. API — IE de §6.5.3)
+5. Seguridad                             0.05    ____     ____
+   (atributo directo: vulns OWASP = 0 → 100 % — IE de §6.5.3)
+
+ΣPi = 0.35 + 0.25 + 0.25 + 0.10 + 0.05 = 1.00
+
+IG = 0.35·IG1 + 0.25·IG2 + 0.25·IG3 + 0.10·IG4 + 0.05·IG5 = ____
+```
+
+**Criterio de aceptación adicional:** el Indicador Global de Preferencia debe alcanzar **IG ≥ 60 %** (nivel Satisfactorio) al cierre del piloto (Sprint S12). Este criterio complementa los criterios de aceptación del producto definidos en §4.5.
+
+> **Referencia:** ISO/IEC 25040; marco de evaluación LSP (S16, Diap. 9–34); ISO/IEC 25020:2019 [9].
+
+#### 6.5.6 Actividades de aseguramiento
+
+- Revisión de código por pares (pull request obligatorio con mínimo 1 aprobador).
+- Análisis estático automático en CI/CD (ESLint + análisis SAST).
+- Ejecución automática de suite de pruebas en cada push a rama develop y main.
+- Revisión periódica de métricas de mantenibilidad del código (cobertura, complejidad ciclomática, duplicación).
 
 ### 6.6 Plan de cierre del proyecto
 
@@ -1103,4 +1567,4 @@ RCA-   Cobertura pruebas           Calidad                 Transversal     Cober
 03     unitarias ≥ 80 %                                                    CI/CD
 ```
 
-Documento elaborado bajo los lineamientos de ISO/IEC/IEEE 16326:2009 para el curso Calidad de Software 2025-2. Versión 1.0 — Junio 2026
+Documento elaborado bajo los lineamientos de ISO/IEC/IEEE 16326:2009 para el curso Calidad de Software 2025-2. Versión 2.1 — Julio 2026. Incorpora métricas de calidad (ISO/IEC 25000 SQuaRE, GQM, LSP) y proceso de mejora continua (PDCA, CMMI) conforme a Sesiones 14, 15, 16 y 22.
